@@ -1,0 +1,94 @@
+<template name="afUniverseScheduler">
+    <div class="universe-autoform-scheduler">
+        <input type="hidden" value={{value}} {{atts}}>
+
+        <div class="form-group">
+            {{> afBootstrapDatepicker extendContext value=startDate atts=emptyObject}}
+
+            <span class="help-block"></span>
+        </div>
+
+        <div class="row">
+        <!-- <div class="form-group"> -->
+            <div class="col-sm-1">
+                <label class="control-label">Repeat</label>
+            </div>
+
+            <div class="col-sm-11">
+                {{#with getRepetitionIntervalInfo}}
+                    <div class="form-inline">
+                        <!-- <div class="col-sm-1"> -->
+                            <!-- <label class="control-label">Repeat</label> -->
+                        <!-- </div> -->
+
+                        <!-- <div class="col-sm-4"> -->
+                            {{> afUniverseSchedulerDropdown options=repetitionOptions value=value label=label}}
+                        <!-- </div> -->
+
+                        {{#if text}}
+                            <!-- <div class="col-sm-1"> -->
+                                <label class="control-label">every</label>
+                            <!-- </div> -->
+
+                            <!-- <div class="col-sm-2"> -->
+                                <input type="number" class="form-control" min="1">
+                            <!-- </div> -->
+
+                            <!-- <div class="col-sm-2"> -->
+                                <label class="control-label">{{text}}</label>
+                            <!-- </div> -->
+                        {{/if}}
+
+                        <span class="help-block"></span>
+                    </div>
+
+                    <div class="row {{#unless eq value "WEEKLY"}}hidden{{/unless}}">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <fieldset class="btn-group" data-toggle="buttons">
+                                    {{#each weeklyOptions}}
+                                        <label class="btn btn-default js-weekly-option">
+                                            <input type="checkbox" data-value="{{value}}">
+                                            {{label}}
+                                        </label>
+                                    {{/each}}
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row {{#unless eq value "MONTHLY"}}hidden{{/unless}}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="radio" {{#if isByMonthDay}}checked{{/if}}>
+                                on day
+                                
+                                {{> afUniverseSchedulerDropdown}}
+                            </div>
+                        </div>
+                    </div>
+                {{/with}}
+            </div>
+        <!-- </div> -->
+        </div>
+    </div>
+</template>
+
+<template name="afUniverseSchedulerDropdown">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" data-selected-value="{{value}}"> 
+            {{label}}
+        </button>
+
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+
+        <ul class="dropdown-menu" role="menu">
+            {{#each options}}
+                <li data-value={{value}} data-text="{{text}}"><a href="#">{{label}}</a></li>
+            {{/each}}
+        </ul>
+    </div>
+</template>
