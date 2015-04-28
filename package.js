@@ -24,6 +24,10 @@ Package.onUse(function (api) {
     api.addFiles([
         'universe-autoform-scheduler.html',
         'universe-autoform-scheduler.js',
-        'stylesheets/modal-fix.css'
+
+        'universe-autoform-bootstrap-datepicker.html',
+        'universe-autoform-bootstrap-datepicker.js',
+
+        'stylesheets/styles.css'
     ], 'client');
 });
