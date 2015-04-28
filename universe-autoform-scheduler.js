@@ -435,6 +435,8 @@ Template.afUniverseScheduler.events({
         if (this.value === 'NONE') {
             rrule.options.count = 1;
             rrule.options.interval = 1;
+
+            rrule.options.byweekday = [];
         } else if (this.value === 'WEEKDAYS') {
             rrule.options.count = null;
             rrule.options.interval = 1;
@@ -751,7 +753,9 @@ var mapByweekdayStringToArray = function (string) {
 var isNoneSet = function (options) {
     if (options.freq === RRule.DAILY &&
         options.interval === 1 &&
-        options.count === 1) {
+        options.count === 1 &&
+        (!options.byweekday ||
+        options.byweekday.length === 0)) {
 
         return true;
     }
@@ -817,17 +821,19 @@ var purifyRRule = (function () {
 
         if (isNoneSet(options)) {
             purifyFreq = 'none';
+        } else if (options.freq === RRule.DAILY && options.byweekday && options.byweekday.length === 5) {
+            purifyFreq = 'weekdays';
+        } else {
+            purifyFreq = RRule.FREQUENCIES[options.freq].toLowerCase();
         }
 
         purifyMap.all.forEach(function (el) {
             options[el] = null;
         });
 
-        if (purifyFreq) {
-            purifyMap[purifyFreq].forEach(function (el) {
-                options[el] = null;
-            });
-        }
+        purifyMap[purifyFreq].forEach(function (el) {
+            options[el] = null;
+        });
 
         return options;
     };
@@ -856,7 +862,7 @@ var assignProperties = function (rrule, template) {
     var endOption;
     //freq might be undefined for NONE and WEEKDAYS,
     //from those 2 only WEEKDAYS might have byweekday set
-    if (options.freq || isOptionSet(options.byweekday)) {
+    if (options.freq || (options.byweekday && options.byweekday.length === 5)) {
         endOption = template.endOption.get();
 
         if (endOption === 'COUNT') {
