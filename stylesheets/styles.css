@@ -1,0 +1,19 @@
+.datepicker.datepicker-dropdown {
+	z-index: 1200 !important;
+}
+
+@media (min-width: 768px) {
+	.universe-autoform-scheduler .control-label {
+		padding-top: 7px;
+		margin-bottom: 0;
+	}
+
+	.universe-autoform-scheduler .form-inline .control-label {
+		padding-top: 0px;
+		margin-bottom: 0;
+	}
+}
+
+input[type="number"].css-js-3-digits {
+    width: 60px;
+}

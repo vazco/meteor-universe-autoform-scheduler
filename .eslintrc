@@ -1,0 +1,54 @@
+{
+  "env": {
+    "meteor": true,
+    "browser": true,
+    "jquery": true,
+    "node": true
+  },
+  "rules": {
+    "no-bitwise": 2,
+    "no-else-return": 2,
+    "no-eq-null": 2,
+    "no-extra-parens": 0,
+    "no-floating-decimal": 2,
+    "no-inner-declarations": [1, "both"],
+    "no-lonely-if": 2,
+    "no-multiple-empty-lines": [2, {"max": 3}],
+    "no-self-compare": 2,
+    "no-unused-expressions": 0,
+    "no-underscore-dangle": 0,
+    "no-use-before-define": 0,
+    "no-void": 2,
+    "camelcase": [1, {"properties": "never"}],
+    "brace-style": [2, "1tbs"],
+    "consistent-return": 0,
+    "comma-style": [2, "last"],
+    "complexity": [1, 15],
+    "func-names": 0, //we should talk about this
+    "global-strict": [1, "always"],
+    "guard-for-in": 2,
+    "indent": [2, 4],
+    "max-len": [0, 120, 4],
+    "new-cap": [2, {"newIsCap": true, "capIsNew": false}],
+    "quotes": [2, "single"],
+    "space-before-function-parentheses": [2, "always"],
+    "space-after-keywords": [2, "always"],
+    "space-before-blocks": [2, "always"],
+    "space-in-brackets": [2, "never"],
+    "space-in-parens": [2, "never"],
+    "strict": [2, "global"],
+    "valid-jsdoc": 1,
+    "wrap-iife": [2, "any"],
+    "yoda": [1, "never"]
+  },
+  "globals": {
+        "ReactiveVar": false,
+        "AutoForm": false,
+        "Meteor": false,
+        "Template": false,
+        "_": false,
+        "Package": false,
+        "RRule": false,
+        "moment": false
+  }
+}
