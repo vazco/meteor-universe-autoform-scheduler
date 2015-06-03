@@ -1,91 +1,133 @@
 <template name="afUniverseScheduler">
     <div class="universe-autoform-scheduler">
-        <input type="hidden" value={{value}} {{atts}}>
+        <input type="hidden" value="{{value}}" {{atts}}>
 
-        <div class="form-group">
-            {{> afBootstrapDatepicker extendContext value=startDate atts=emptyObject}}
-
-            <span class="help-block"></span>
-        </div>
-
-        <div class="row">
-        <!-- <div class="form-group"> -->
-            <div class="col-sm-1">
-                <label class="control-label">Repeat</label>
+        {{#with getRRule}}
+            <div class="form-inline">
+               {{> afUniverseBootstrapDatepicker extendContext value=getDtstart atts=emptyObject id="js-dtstart"}}
+                <span class="help-block"></span>
             </div>
 
-            <div class="col-sm-11">
-                {{#with getRepetitionIntervalInfo}}
+            <div class="row form-group">
+                <div class="col-sm-1">
+                    <label class="control-label">Repeat</label>
+                </div>
+
+                <div class="col-sm-11">
                     <div class="form-inline">
-                        <!-- <div class="col-sm-1"> -->
-                            <!-- <label class="control-label">Repeat</label> -->
-                        <!-- </div> -->
+                        {{> afUniverseSchedulerDropdown options=freqOptions id="js-freq" value=freq label=getFreqLabel}}
 
-                        <!-- <div class="col-sm-4"> -->
-                            {{> afUniverseSchedulerDropdown options=repetitionOptions value=value label=label}}
-                        <!-- </div> -->
-
-                        {{#if text}}
-                            <!-- <div class="col-sm-1"> -->
+                        {{#if getFreqText}}
                                 <label class="control-label">every</label>
-                            <!-- </div> -->
 
-                            <!-- <div class="col-sm-2"> -->
-                                <input type="number" class="form-control" min="1">
-                            <!-- </div> -->
+                                <input type="number" class="form-control css-js-3-digits" name="interval" min="1" value={{getInterval}} />
 
-                            <!-- <div class="col-sm-2"> -->
-                                <label class="control-label">{{text}}</label>
-                            <!-- </div> -->
+                                <label class="control-label">{{getFreqText}}</label>
                         {{/if}}
 
                         <span class="help-block"></span>
                     </div>
 
-                    <div class="row {{#unless eq value "WEEKLY"}}hidden{{/unless}}">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <fieldset class="btn-group" data-toggle="buttons">
-                                    {{#each weeklyOptions}}
-                                        <label class="btn btn-default js-weekly-option">
-                                            <input type="checkbox" data-value="{{value}}">
-                                            {{label}}
-                                        </label>
-                                    {{/each}}
-                                </fieldset>
+                    {{#if eq getFreq "WEEKLY"}}
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <fieldset class="btn-group" data-toggle="buttons">
+                                        {{#each weeklyOptions}}
+                                            <label class="btn btn-default js-weekly-option {{#if hasWeekday}}active{{/if}}">
+                                                <input type="checkbox" data-value="{{value}}" checked={{hasWeekday}}>
+                                                {{label}}
+                                            </label>
+                                        {{/each}}
+                                    </fieldset>
+                                </div>
                             </div>
                         </div>
+                    {{/if}}
+
+                    {{#if eq getFreq "MONTHLY"}}
+                        <div id="js-monthly-row" class="row">
+                            <div class="col-sm-12 form-group">
+                                <input type="radio" name="monthlyRadio" value="bymonthday" checked={{isState 'monthlyState' 'bymonthday'}}>
+                                on day
+
+                                {{> afUniverseSchedulerDropdown options=bymonthdayOptions id="js-bymonthday" value=getBymonthdayValue label=getBymonthdayValue}}
+                            </div>
+
+                            <div class="col-sm-12">
+                                <input type="radio" name="monthlyRadio" value="bysetpos" checked={{isState 'monthlyState' 'bysetposByweekday'}}>
+                                on the
+                                {{> afUniverseSchedulerDropdown options=bysetposOptions id="js-bysetpos" value=getBysetposValue label=getBysetposLabel}}
+
+                                {{> afUniverseSchedulerDropdown options=bysetposBydayOptions id="js-bysetpos-byday" value=getBysetposBydayValue label=getBysetposBydayLabel}}
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if eq getFreq "YEARLY"}}
+                        <div id="js-yearly-row" class="row">
+                            <div class="col-sm-12 form-group">
+                                <input type="radio" name="yearlyRadio" value="bymonthday" checked={{isState 'yearlyState' 'bymonthBymonthday'}}>
+                                on
+                                {{> afUniverseSchedulerDropdown options=monthsOptions id="js-bymonth-bymonthday" label=getBymonthdayBymonthLabel}}
+
+                                {{> afUniverseSchedulerDropdown options=bymonthdayOptions id="js-yearly-bymonthday" label=getBymonthdayLabel}}
+
+                            </div>
+
+                            <div class="col-sm-12">
+                                <input type="radio" name="yearlyRadio" value="bysetpos" checked={{isState 'yearlyState' 'bysetposByweekdayBymonth'}}>
+                                on the
+                                {{> afUniverseSchedulerDropdown options=bysetposOptions id="js-yearly-bysetpos" label=getYearlyBysetposLabel}}
+
+                                {{> afUniverseSchedulerDropdown options=bysetposBydayOptions id="js-yearly-byweekday" label=getYearlyByweekdayLabel}}
+
+                                of
+
+                                {{> afUniverseSchedulerDropdown options=monthsOptions id="js-bysetpos-bymonth" label=getBysetposBymonthLabel}}
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+
+            {{#unless isNoneSet}}
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label">End</label>
                     </div>
 
-                    <div class="row {{#unless eq value "MONTHLY"}}hidden{{/unless}}">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <input type="radio" {{#if isByMonthDay}}checked{{/if}}>
-                                on day
-                                
-                                {{> afUniverseSchedulerDropdown}}
-                            </div>
-                        </div>
+                    <div class="col-sm-11 form-inline">
+                        {{> afUniverseSchedulerDropdown options=endOptions id="js-end" label=getEndLabel}}
+
+                        {{#if eq getEndValue "COUNT"}}
+                            <input type="number" class="form-control css-js-3-digits" name="count" min="1" value={{getCount}} />
+                            <label class="control-label">occurance(s)</label>
+                        {{/if}}
+
+                        {{#if eq getEndValue "UNTIL"}}
+                            {{> afUniverseBootstrapDatepicker extendContext value=getUntil atts=emptyObject id="js-until"}}
+                        {{/if}}
                     </div>
-                {{/with}}
-            </div>
-        <!-- </div> -->
-        </div>
+                </div>
+            {{/unless}}
+
+        {{/with}}
     </div>
 </template>
 
 <template name="afUniverseSchedulerDropdown">
     <div class="btn-group">
-        <button type="button" class="btn btn-default" data-selected-value="{{value}}"> 
+        <button type="button" class="btn btn-default {{atts}}" data-selected-value="{{value}}">
             {{label}}
         </button>
 
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle {{atts}}" data-toggle="dropdown" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
 
-        <ul class="dropdown-menu" role="menu">
+        <ul id={{id}} class="dropdown-menu" role="menu">
             {{#each options}}
                 <li data-value={{value}} data-text="{{text}}"><a href="#">{{label}}</a></li>
             {{/each}}

@@ -9,18 +9,25 @@ Package.describe({
 
 Package.onUse(function (api) {
     api.versionsFrom('1.0.4');
-    api.use('templating@1.0.0');
-    api.use('blaze@2.0.0');
+    api.use('jquery');
+    api.use('templating');
+    api.use('blaze');
+    api.use('underscore');
+    api.use('check');
     api.use('aldeed:autoform@4.0.0');
     api.use('rajit:bootstrap3-datepicker@1.1.1');
     api.use('momentjs:moment@2.9.0');
-    api.use('aldeed:autoform-bs-datepicker@1.1.1');
     api.use('vazco:universe-utilities@1.0.7');
     api.use('reactive-dict@1.1.0');
+    api.use('aramk:rrule@2.1.0');
 
     api.addFiles([
         'universe-autoform-scheduler.html',
         'universe-autoform-scheduler.js',
-        'stylesheets/modal-fix.css'
+
+        'universe-autoform-bootstrap-datepicker.html',
+        'universe-autoform-bootstrap-datepicker.js',
+
+        'stylesheets/styles.css'
     ], 'client');
 });
