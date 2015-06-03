@@ -110,7 +110,7 @@ Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line compl
     var defaultLabel;
 
     // var options = 'FREQ=WEEKLY;BYDAY=MO,TU,WE;INTERVAL=5;COUNT=1';
-    var options = this.value;
+    var options = this.value || '';
     var rrule = this.rrule = new RRule(RRule.parseString(options));
     var rruleString = this.rruleString = new ReactiveVar(rrule.toString());
 
@@ -239,8 +239,8 @@ Template.afUniverseScheduler.onRendered(function () {
         var rrule = self.rrule.get();
 
         //TODO: purify rrule, clear all undisplayed or unchecked fields
-        console.log('autorun');
-        console.log(rrule);
+        // console.log('autorun');
+        // console.log(rrule);
         self.$('[data-schema-key]').val(self.rruleString.get());
     });
 });
