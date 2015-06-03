@@ -90,6 +90,7 @@ var getLabel = _.partial(getField, 'label');
 var getValue = _.partial(getField, 'value');
 var getData = _.partial(getField, 'data');
 
+//TODO: valueOut
 AutoForm.addInputType('universe-scheduler', {
     template: 'afUniverseScheduler',
     valueOut: function () {
@@ -98,7 +99,7 @@ AutoForm.addInputType('universe-scheduler', {
     contextAdjust: function (context) {
         var iCalString = context.value;
 
-iCalString = 'FREQ=WEEKLY;DTSTART=20110201T093000Z;INTERVAL=5;UNTIL=20130130T230000Z;BYDAY=MO,FR';
+        iCalString = 'FREQ=WEEKLY;DTSTART=20110201T093000Z;INTERVAL=5;UNTIL=20130130T230000Z;BYDAY=MO,FR';
         var iCal = new ICal(iCalString);
 
         return _.extend(context, iCal.extractForScheduler());
@@ -108,7 +109,8 @@ iCalString = 'FREQ=WEEKLY;DTSTART=20110201T093000Z;INTERVAL=5;UNTIL=20130130T230
 Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line complexity
     var defaultLabel;
 
-    var options = 'FREQ=WEEKLY;BYDAY=MO,TU,WE;INTERVAL=5;COUNT=1';
+    // var options = 'FREQ=WEEKLY;BYDAY=MO,TU,WE;INTERVAL=5;COUNT=1';
+    var options = this.value;
     var rrule = this.rrule = new RRule(RRule.parseString(options));
     var rruleString = this.rruleString = new ReactiveVar(rrule.toString());
 
@@ -874,3 +876,8 @@ var assignProperties = function (rrule, template) {
 
     return rrule;
 };
+
+//TODO: count w yearly
+//https://bitbucket.org/vazco/mp_pnyx/src/909b8bec4826843c53f2979ba383d42508898b70/mods/rooms/lib/collections/Rooms.js?at=master
+//value out tlyko active
+//https://bitbucket.org/vazco/mp_pnyx/src/909b8bec4826843c53f2979ba383d42508898b70/mods/rooms/components/roomsTimelineFilter/client/roomsTimelineFilter_templateTags.js?at=master
