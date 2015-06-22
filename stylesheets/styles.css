@@ -17,3 +17,7 @@
 input[type="number"].css-js-3-digits {
     width: 60px;
 }
+
+.diffed-section {
+	color: red;
+}

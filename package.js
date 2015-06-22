@@ -15,7 +15,8 @@ Package.onUse(function (api) {
     api.use('underscore');
     api.use('check');
     api.use('aldeed:autoform@4.0.0');
-    api.use('rajit:bootstrap3-datepicker@1.1.1');
+    // api.use('rajit:bootstrap3-datepicker@1.1.1');
+    api.use('tsega:bootstrap3-datetimepicker@4.14.30_4'),
     api.use('momentjs:moment@2.9.0');
     api.use('vazco:universe-utilities@1.0.7');
     api.use('reactive-dict@1.1.0');

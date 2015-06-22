@@ -90,7 +90,6 @@ var getLabel = _.partial(getField, 'label');
 var getValue = _.partial(getField, 'value');
 var getData = _.partial(getField, 'data');
 
-//TODO: valueOut
 AutoForm.addInputType('universe-scheduler', {
     template: 'afUniverseScheduler',
     valueOut: function () {
@@ -109,10 +108,11 @@ AutoForm.addInputType('universe-scheduler', {
 Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line complexity
     var defaultLabel;
 
-    // var options = 'FREQ=WEEKLY;BYDAY=MO,TU,WE;INTERVAL=5;COUNT=1';
-    var options = this.value || '';
+    var options = this.data.value || '';
     var rrule = this.rrule = new RRule(RRule.parseString(options));
-    var rruleString = this.rruleString = new ReactiveVar(rrule.toString());
+
+    var once = 'FREQ=DAILY;INTERVAL=1;COUNT=1'; //iCal's once
+    var rruleString = this.rruleString = new ReactiveVar(rrule.toString() || once);
 
     this.rrule.get = function () {
         return RRule.fromString(rruleString.get());
@@ -161,7 +161,7 @@ Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line compl
     this.freqText = new ReactiveVar(freq.text);
 
     var weeklyWeekdays = mapByweekdayToString(rrule.options.byweekday);
-    this.weeklyWeekdays = new ReactiveVar(weeklyWeekdays);
+    this.weeklyWeekdays = new ReactiveVar(weeklyWeekdays || '');
 
     var bymonthday = isOptionSet(rrule.options, 'bymonthday') ? rrule.options.bymonthday : [1];
     this.bymonthday = new ReactiveVar(bymonthday);
@@ -236,11 +236,11 @@ Template.afUniverseScheduler.onRendered(function () {
     var self = this;
 
     this.autorun(function () {
-        var rrule = self.rrule.get();
+        // var rrule = self.rrule.get();
 
         //TODO: purify rrule, clear all undisplayed or unchecked fields
         // console.log('autorun');
-        // console.log(rrule);
+        // console.log(self.rruleString.get());
         self.$('[data-schema-key]').val(self.rruleString.get());
     });
 });
@@ -248,7 +248,7 @@ Template.afUniverseScheduler.onRendered(function () {
 var formatDate = function (date) {
     date = ensureMoment(date);
 
-    return date.format('MM/DD/YYYY');
+    return date.format('MM/DD/YYYY hh:mm A');
 };
 
 var ensureMoment = function (date) {
@@ -629,9 +629,11 @@ Template.afUniverseScheduler.events({
 
         template.yearlyBysetposByweekday.set(value);
     },
-    'changeDate #js-dtstart': function (event, template) {
+    // 'changeDate #js-dtstart': function (event, template) {
+    'dp.change #js-dtstart': function (event, template) {
         var rrule = template.rrule.get();
-        rrule.options.dtstart = event.date;
+        // rrule.options.dtstart = event.date;
+        rrule.options.dtstart = event.date.toDate(); //this datetimepicker keeps date as moment
         template.rrule.set(rrule);
     },
     'click #js-end li': function (event, template) {
@@ -744,6 +746,10 @@ var mapByweekdayToString = function (arr) {
 };
 
 var mapByweekdayStringToArray = function (string) {
+    if (string.length === 0) {
+        return [];
+    }
+
     var value = string.split(',').map(function (el) {
         return RRule[el];
     });
@@ -877,7 +883,3 @@ var assignProperties = function (rrule, template) {
     return rrule;
 };
 
-//TODO: count w yearly
-//https://bitbucket.org/vazco/mp_pnyx/src/909b8bec4826843c53f2979ba383d42508898b70/mods/rooms/lib/collections/Rooms.js?at=master
-//value out tlyko active
-//https://bitbucket.org/vazco/mp_pnyx/src/909b8bec4826843c53f2979ba383d42508898b70/mods/rooms/components/roomsTimelineFilter/client/roomsTimelineFilter_templateTags.js?at=master
