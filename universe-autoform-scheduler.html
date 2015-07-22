@@ -4,7 +4,9 @@
 
         {{#with getRRule}}
             <div class="form-inline">
-               {{> afUniverseBootstrapDatepicker extendContext value=getDtstart atts=emptyObject id="js-dtstart"}}
+                {{#with value=getDtstart atts=emptyObject id="js-dtstart"}}
+                    {{> afUniverseBootstrapDatepicker}}
+                {{/with}}
                 <span class="help-block"></span>
             </div>
 
@@ -106,7 +108,9 @@
                         {{/if}}
 
                         {{#if eq getEndValue "UNTIL"}}
-                            {{> afUniverseBootstrapDatepicker extendContext value=getUntil atts=emptyObject id="js-until"}}
+                            {{#with value=getUntil atts=emptyObject id="js-until"}}
+                                {{> afUniverseBootstrapDatepicker}}
+                            {{/with}}
                         {{/if}}
                     </div>
                 </div>
