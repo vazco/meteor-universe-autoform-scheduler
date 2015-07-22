@@ -667,9 +667,10 @@ Template.afUniverseScheduler.events({
 
         template.rrule.set(rrule);
     },
-    'changeDate #js-until': function (event, template) {
+    // 'changeDate #js-until': function (event, template) {
+    'dp.change #js-until': function (event, template) {
         var rrule = template.rrule.get();
-        var value = event.date;
+        var value = event.date.toDate();
 
         rrule.options.until = value;
         template.rrule.set(rrule);
