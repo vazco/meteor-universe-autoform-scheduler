@@ -149,7 +149,7 @@ Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line compl
         this.freqLabel = new ReactiveVar(defaultLabel);
     } else if (isNoneSet(rrule.options)) {
         this.freqLabel = new ReactiveVar(getLabel('NONE', freqOptions));
-    } else if (freq.value === RRule.DAILY && rrule.options.byweekday.length > 0) {
+    } else if (freq.value === RRule.DAILY && rrule.options.byweekday && rrule.options.byweekday.length) {
         this.freqLabel = new ReactiveVar(getLabel('WEEKDAYS', freqOptions));
     } else {
         this.freqLabel = new ReactiveVar(getLabel(freq.value, freqOptions));
