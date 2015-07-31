@@ -19,7 +19,8 @@ var makeOption = function (value, label, data) {
 };
 
 var freqOptionsMap = [
-    makeOption('NONE', 'None (run once)'),
+    // BUGGY
+    // makeOption('NONE', 'None (run once)'),
     makeOption('HOURLY', 'Hourly', {text: 'hour(s)'}),
     makeOption('DAILY', 'Daily', {text: 'day(s)'}),
     makeOption('WEEKDAYS', 'Weekdays'),
@@ -147,8 +148,9 @@ Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line compl
     if (!freq) {
         defaultLabel = freqOptions[0].label;
         this.freqLabel = new ReactiveVar(defaultLabel);
-    } else if (isNoneSet(rrule.options)) {
-        this.freqLabel = new ReactiveVar(getLabel('NONE', freqOptions));
+    // BUGGY
+    // } else if (isNoneSet(rrule.options)) {
+    //     this.freqLabel = new ReactiveVar(getLabel('NONE', freqOptions));
     } else if (freq.value === RRule.DAILY && rrule.options.byweekday && rrule.options.byweekday.length) {
         this.freqLabel = new ReactiveVar(getLabel('WEEKDAYS', freqOptions));
     } else {
@@ -199,7 +201,9 @@ Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line compl
 
     if (isOptionSet(rrule.options, 'until')) {
         endOption = 'UNTIL';
-    } else if (isOptionSet(rrule.options, 'count') && !isNoneSet(rrule.options)) {
+    // BUGGY
+    // } else if (isOptionSet(rrule.options, 'count') && !isNoneSet(rrule.options)) {
+    } else if (isOptionSet(rrule.options, 'count')) {
         endOption = 'COUNT';
     }
 
@@ -420,11 +424,12 @@ Template.afUniverseScheduler.helpers({
     getInterval: function () {
         return Template.instance().interval.get();
     },
-    isNoneSet: function () {
-        var options = Template.instance().rrule.get().options;
+    // BUGGY
+    // isNoneSet: function () {
+    //     var options = Template.instance().rrule.get().options;
 
-        return isNoneSet(options);
-    },
+    //     return isNoneSet(options);
+    // },
     isState: function (type, desiredState) {
         return Template.instance()[type].get() === desiredState;
     }
@@ -434,12 +439,14 @@ Template.afUniverseScheduler.events({
     'click #js-freq li': function (event, template) {
         var rrule = template.rrule.get();
 
-        if (this.value === 'NONE') {
-            rrule.options.count = 1;
-            rrule.options.interval = 1;
+        // BUGGY
+        // if (this.value === 'NONE') {
+        //     rrule.options.count = 1;
+        //     rrule.options.interval = 1;
 
-            rrule.options.byweekday = [];
-        } else if (this.value === 'WEEKDAYS') {
+        //     rrule.options.byweekday = [];
+        // } else if (this.value === 'WEEKDAYS') {
+        if (this.value === 'WEEKDAYS') {
             rrule.options.count = null;
             rrule.options.interval = 1;
 
@@ -759,18 +766,19 @@ var mapByweekdayStringToArray = function (string) {
 };
 
 
-var isNoneSet = function (options) {
-    if (options.freq === RRule.DAILY &&
-        options.interval === 1 &&
-        options.count === 1 &&
-        (!options.byweekday ||
-        options.byweekday.length === 0)) {
+// BUGGY
+// var isNoneSet = function (options) {
+//     if (options.freq === RRule.DAILY &&
+//         options.interval === 1 &&
+//         options.count === 1 &&
+//         (!options.byweekday ||
+//         options.byweekday.length === 0)) {
 
-        return true;
-    }
+//         return true;
+//     }
 
-    return false;
-};
+//     return false;
+// };
 
 var purifyRRule = (function () {
     //this scheduler can use only combinations of these options:
@@ -786,13 +794,14 @@ var purifyRRule = (function () {
             'byweekno',
             'byyearday'
         ],
-        none: [
-            'byweekday',
-            'bymonthday',
-            'bysetpos',
-            'bymonth',
-            'until'
-        ],
+        // BUGGY
+        // none: [
+        //     'byweekday',
+        //     'bymonthday',
+        //     'bysetpos',
+        //     'bymonth',
+        //     'until'
+        // ],
         hourly: [
             'byweekday',
             'bymonthday',
@@ -828,9 +837,11 @@ var purifyRRule = (function () {
     return function (options) {
         var purifyFreq;
 
-        if (isNoneSet(options)) {
-            purifyFreq = 'none';
-        } else if (options.freq === RRule.DAILY && options.byweekday && options.byweekday.length === 5) {
+        // BUGGY
+        // if (isNoneSet(options)) {
+        //     purifyFreq = 'none';
+        // } else if (options.freq === RRule.DAILY && options.byweekday && options.byweekday.length === 5) {
+        if (options.freq === RRule.DAILY && options.byweekday && options.byweekday.length === 5) {
             purifyFreq = 'weekdays';
         } else {
             purifyFreq = RRule.FREQUENCIES[options.freq].toLowerCase();

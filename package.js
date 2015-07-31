@@ -3,7 +3,7 @@
 Package.describe({
     name: 'vazco:universe-autoform-scheduler',
     summary: 'Custom "afUniverseScheduler" input type for AutoForm',
-    version: '0.0.1',
+    version: '0.1.0',
     git: 'https://github.com/vazco/meteor-universe-autoform-scheduler.git'
 });
 
