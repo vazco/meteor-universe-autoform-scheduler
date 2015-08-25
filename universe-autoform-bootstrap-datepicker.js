@@ -1,7 +1,7 @@
 'use strict';
 
-// $.fn._universeDatepicker = $.fn.datepicker; //hijack this package datepicker
-$.fn._universeDatepicker = $.fn.datetimepicker; //hijack this package datepicker
+$.fn._universeDatepicker = $.fn.datepicker; //hijack this package datepicker
+$.fn._universeDatetimepicker = $.fn.datetimepicker; //hijack this package datepicker
 
 Template.afUniverseBootstrapDatepicker.helpers({
     atts: function () {
@@ -18,9 +18,14 @@ Template.afUniverseBootstrapDatepicker.onRendered(function () {
     var $input = this.data.atts.buttonClasses ? this.$('.input-group.date') : this.$('input');
     var data = this.data;
     // instanciate datepicker
-    $input._universeDatepicker(data.atts.datePickerOptions);
-
-    var datepicker = $input.data('DateTimePicker');
+    var datepicker;
+    if (data.id === 'js-until') {
+        $input._universeDatepicker(data.atts.datePickerOptions);
+        datepicker = $input.data('datepicker');
+    } else {
+        $input._universeDatetimepicker(data.atts.datePickerOptions);
+        datepicker = $input.data('DateTimePicker');
+    }
 
     // set and reactively update values
     this.autorun(function () {
