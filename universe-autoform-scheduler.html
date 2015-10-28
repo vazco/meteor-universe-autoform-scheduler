@@ -3,19 +3,19 @@
         <input type="hidden" value="{{value}}" {{atts}}>
 
         {{#with getRRule}}
-            <div class="form-inline">
+            <div class="form-inline hidden">
                 {{#with value=getDtstart atts=emptyObject id="js-dtstart"}}
                     {{> afUniverseBootstrapDatepicker}}
                 {{/with}}
                 <span class="help-block"></span>
             </div>
 
-            <div class="row form-group">
-                <div class="col-sm-1">
+            <div class="row">
+                <div class="col-sm-3 text-right">
                     <label class="control-label">Repeat</label>
                 </div>
 
-                <div class="col-sm-11">
+                <div class="col-sm-9">
                     <div class="form-inline">
                         {{> afUniverseSchedulerDropdown options=freqOptions id="js-freq" value=freq label=getFreqLabel}}
 
@@ -56,7 +56,7 @@
                                 {{> afUniverseSchedulerDropdown options=bymonthdayOptions id="js-bymonthday" value=getBymonthdayValue label=getBymonthdayValue}}
                             </div>
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 form-group">
                                 <input type="radio" name="monthlyRadio" value="bysetpos" checked={{isState 'monthlyState' 'bysetposByweekday'}}>
                                 on the
                                 {{> afUniverseSchedulerDropdown options=bysetposOptions id="js-bysetpos" value=getBysetposValue label=getBysetposLabel}}
@@ -77,7 +77,7 @@
 
                             </div>
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 form-group">
                                 <input type="radio" name="yearlyRadio" value="bysetpos" checked={{isState 'yearlyState' 'bysetposByweekdayBymonth'}}>
                                 on the
                                 {{> afUniverseSchedulerDropdown options=bysetposOptions id="js-yearly-bysetpos" label=getYearlyBysetposLabel}}
@@ -95,11 +95,11 @@
 
             {{#unless isNoneSet}}
                 <div class="row">
-                    <div class="col-sm-1">
+                    <div class="col-sm-3 text-right">
                         <label class="control-label">End</label>
                     </div>
 
-                    <div class="col-sm-11 form-inline">
+                    <div class="col-sm-9 form-inline">
                         {{> afUniverseSchedulerDropdown options=endOptions id="js-end" label=getEndLabel}}
 
                         {{#if eq getEndValue "COUNT"}}

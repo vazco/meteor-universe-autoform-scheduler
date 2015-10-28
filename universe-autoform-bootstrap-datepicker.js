@@ -19,13 +19,15 @@ Template.afUniverseBootstrapDatepicker.onRendered(function () {
     var data = this.data;
     // instanciate datepicker
     var datepicker;
-    if (data.id === 'js-until') {
-        $input._universeDatepicker(data.atts.datePickerOptions);
-        datepicker = $input.data('datepicker');
-    } else {
-        $input._universeDatetimepicker(data.atts.datePickerOptions);
-        datepicker = $input.data('DateTimePicker');
+    if(data.atts.datePickerOptions){
+        data.atts.datePickerOptions.format = 'dd/mm/yyyy';
+    }else{
+        data.atts.datePickerOptions = {
+                format: 'DD/MM/YYYY'
+            };
     }
+    $input._universeDatetimepicker(data.atts.datePickerOptions);
+    datepicker = $input.data('DateTimePicker');
 
     // set and reactively update values
     this.autorun(function () {

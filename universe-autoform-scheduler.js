@@ -66,7 +66,6 @@ var monthsOptions = [
 ];
 
 var endOptions = [
-    makeOption('never', 'Never'),
     makeOption('COUNT', 'After'),
     makeOption('UNTIL', 'On date')
 ];
@@ -207,7 +206,7 @@ Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line compl
         endOption = 'COUNT';
     }
 
-    this.endOption = new ReactiveVar(endOption || 'never');
+    this.endOption = new ReactiveVar(endOption || 'COUNT');
 
     this.until = new ReactiveVar(rrule.options.until);
     this.count = new ReactiveVar(rrule.options.count);
@@ -252,7 +251,7 @@ Template.afUniverseScheduler.onRendered(function () {
 var formatDate = function (date) {
     date = ensureMoment(date);
 
-    return date.format('MM/DD/YYYY hh:mm A');
+    return date.format('DD/MM/YYYY hh:mm A');
 };
 
 var ensureMoment = function (date) {
@@ -408,7 +407,7 @@ Template.afUniverseScheduler.helpers({
         var value = Template.instance().endOption.get();
         var label = getLabel(value, endOptions);
 
-        return label ? label : getLabel('never', endOptions);
+        return label ? label : getLabel('COUNT', endOptions);
     },
     getEndValue: function () {
         return Template.instance().endOption.get();
