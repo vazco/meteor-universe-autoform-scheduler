@@ -242,8 +242,6 @@ Template.afUniverseScheduler.onRendered(function () {
         // var rrule = self.rrule.get();
 
         //TODO: purify rrule, clear all undisplayed or unchecked fields
-        // console.log('autorun');
-        // console.log(self.rruleString.get());
         self.$('[data-schema-key]').val(self.rruleString.get());
     });
 });
@@ -513,7 +511,6 @@ Template.afUniverseScheduler.events({
 
             template.monthlyState.set('bymonthday');
         }
-
         template.rrule.set(rrule);
     },
     'click #js-bymonthday li': function (event, template) {
@@ -530,7 +527,6 @@ Template.afUniverseScheduler.events({
     'click #js-bysetpos li': function (event, template) {
         var rrule = template.rrule.get();
         var value = this.value;
-
         if (isOptionSet(rrule.options, 'bysetpos')) {
             rrule.options.bysetpos = value;
             template.rrule.set(rrule);
@@ -874,9 +870,9 @@ var assignProperties = function (rrule, template) {
         options.byweekday = [];
     }
 
-    if (options.freq === RRule.WEEKLY) {
-        options.byweekday = mapByweekdayStringToArray(template.weeklyWeekdays.get());
-    }
+    //if (options.freq === RRule.WEEKLY) {
+    //    options.byweekday = mapByweekdayStringToArray(template.weeklyWeekdays.get());
+    //}
 
     var endOption;
     //freq might be undefined for NONE and WEEKDAYS,
