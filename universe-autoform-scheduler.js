@@ -106,12 +106,11 @@ AutoForm.addInputType('universe-scheduler', {
 });
 
 Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line complexity
+    var once = 'FREQ=DAILY;INTERVAL=1;COUNT=1';
     var defaultLabel;
-
-    var options = this.data.value || '';
+    var options = this.data.value || once;
     var rrule = this.rrule = new RRule(RRule.parseString(options));
-
-    var once = 'FREQ=DAILY;INTERVAL=1;COUNT=1'; //iCal's once
+     //iCal's once
     var rruleString = this.rruleString = new ReactiveVar(rrule.toString() || once);
 
     this.rrule.get = function () {
@@ -151,7 +150,7 @@ Template.afUniverseScheduler.onCreated(function () { //eslint-disable-line compl
     // } else if (isNoneSet(rrule.options)) {
     //     this.freqLabel = new ReactiveVar(getLabel('NONE', freqOptions));
     } else if (freq.value === RRule.DAILY && rrule.options.byweekday && rrule.options.byweekday.length) {
-        this.freqLabel = new ReactiveVar(getLabel('WEEKDAYS', freqOptions));
+        this.freqLabel = new ReactiveVar(getLabel('DAILY', freqOptions));
     } else {
         this.freqLabel = new ReactiveVar(getLabel(freq.value, freqOptions));
 
@@ -412,7 +411,6 @@ Template.afUniverseScheduler.helpers({
     },
     getUntil: function () {
         var until = Template.instance().until.get();
-
         return formatDate(until || '');
     },
     getCount: function () {
@@ -655,7 +653,7 @@ Template.afUniverseScheduler.events({
             template.count.set(count);
 
         } else if (value === 'UNTIL') {
-            until = until ? until : new Date();
+            until = until ? until : rrule.options.dtstart;
 
             rrule.options.until = until;
             rrule.options.count = null;
@@ -673,7 +671,6 @@ Template.afUniverseScheduler.events({
     'dp.change #js-until': function (event, template) {
         var rrule = template.rrule.get();
         var value = event.date.toDate();
-
         rrule.options.until = value;
         template.rrule.set(rrule);
 
