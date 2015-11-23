@@ -18,7 +18,7 @@ Package.onUse(function (api) {
     api.use('rajit:bootstrap3-datepicker@1.1.1');
     api.use('tsega:bootstrap3-datetimepicker@4.14.30_4');
     api.use('momentjs:moment@2.9.0');
-    api.use('vazco:universe-utilities@1.0.7');
+    api.use('universe:utilities');
     api.use('reactive-dict@1.1.0');
     api.use('aramk:rrule@2.1.0');
 
