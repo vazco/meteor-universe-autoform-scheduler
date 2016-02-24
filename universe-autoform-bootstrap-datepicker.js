@@ -33,10 +33,10 @@ Template.afUniverseBootstrapDatepicker.onRendered(function () {
         // set field value
         if (data.value instanceof Date) {
             // $input._universeDatepicker('setUTCDate', data.value);
-            datepicker.date(data.value);
+            datepicker.setDate(data.value);
         } else if (typeof data.value === 'string') {
             // $input._universeDatepicker('update', data.value);
-            datepicker.date(data.value);
+            datepicker.setDate(data.value);
         }
         // set start date if there's a min in the schema
         if (data.min instanceof Date) {
@@ -44,7 +44,7 @@ Template.afUniverseBootstrapDatepicker.onRendered(function () {
             // so convert UTC Date object to local
             var startDate = utcToLocal(data.min);
             // $input._universeDatepicker('setStartDate', startDate);
-            datepicker.minDate(startDate);
+            datepicker.setMinDate(startDate);
         }
         // set end date if there's a max in the schema
         if (data.max instanceof Date) {
@@ -52,7 +52,7 @@ Template.afUniverseBootstrapDatepicker.onRendered(function () {
             // so convert UTC Date object to local
             var endDate = utcToLocal(data.max);
             // $input._universeDatepicker('setEndDate', endDate);
-            datepicker.maxDate(endDate);
+            datepicker.setMaxDate(endDate);
         }
     });
 });
